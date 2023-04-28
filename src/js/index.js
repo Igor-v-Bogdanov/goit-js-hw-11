@@ -23,6 +23,7 @@ form.addEventListener('submit', searchPhoto);
 
 // ----------------------------------------------------------------------------
 function searchPhoto(evt) {
+  
   evt.preventDefault();
   const searchQuery = form.elements.searchQuery.value
     .trim()
@@ -40,7 +41,7 @@ function searchPhoto(evt) {
 
 // ----------------------------------------------------------------------------
 async function fetchData(valueQ) {
-
+  pageNumber = 1;
   try {
     const resp = await axios.get(
       `${BASE_URL}?key=${API_KEY}&q=${valueQ}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${pageNumber}`
@@ -51,6 +52,19 @@ async function fetchData(valueQ) {
     console.error(error);
   }
 }
+
+async function newFetchData(valueQ) {
+  try {
+    const resp = await axios.get(
+      `${BASE_URL}?key=${API_KEY}&q=${valueQ}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${pageNumber}`
+    );
+    // console.log(resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 // ----------------------------------------------------------------------------
 function renderPhoto(arrayOfPhotos) {
@@ -140,7 +154,7 @@ function addPage(evt) {
   // console.log(searchQuery);
 
   if (searchQuery !== '') {
-    fetchData(searchQuery).then(addNewPage);
+    newFetchData(searchQuery).then(addNewPage);
   } else {
     Notiflix.Notify.failure(sorry);
     gallery.innerHTML = ``;
