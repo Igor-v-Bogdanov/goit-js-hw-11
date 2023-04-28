@@ -20,6 +20,7 @@ const newArea = document.querySelector('.new-area');
 
 form.addEventListener('submit', searchPhoto);
 
+
 // ----------------------------------------------------------------------------
 function searchPhoto(evt) {
   evt.preventDefault();
@@ -39,6 +40,7 @@ function searchPhoto(evt) {
 
 // ----------------------------------------------------------------------------
 async function fetchData(valueQ) {
+
   try {
     const resp = await axios.get(
       `${BASE_URL}?key=${API_KEY}&q=${valueQ}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${pageNumber}`
@@ -156,6 +158,7 @@ function addNewPage(arrayOfNewPagePhotos) {
     // gallery.innerHTML = ``;
     newArea.innerHTML = HIDD_BTN;
     Notiflix.Notify.failure(theEnd);
+    pageNumber = 1;
   } else {
     newArea.innerHTML = VISIB_BTN;
 
