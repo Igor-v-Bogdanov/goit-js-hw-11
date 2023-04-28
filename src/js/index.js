@@ -20,10 +20,8 @@ const newArea = document.querySelector('.new-area');
 
 form.addEventListener('submit', searchPhoto);
 
-
 // ----------------------------------------------------------------------------
 function searchPhoto(evt) {
-  
   evt.preventDefault();
   const searchQuery = form.elements.searchQuery.value
     .trim()
@@ -65,7 +63,6 @@ async function newFetchData(valueQ) {
   }
 }
 
-
 // ----------------------------------------------------------------------------
 function renderPhoto(arrayOfPhotos) {
   const photos = arrayOfPhotos.data.hits;
@@ -78,7 +75,7 @@ function renderPhoto(arrayOfPhotos) {
   }
 
   if (totalHits > 0 && totalHits <= perPage) {
-    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+    Notiflix.Notify.failure(theEnd);
     gallery.innerHTML = ``;
     newArea.innerHTML = HIDD_BTN;
     // console.log(photos);
@@ -168,11 +165,32 @@ function addNewPage(arrayOfNewPagePhotos) {
   const totalHits = arrayOfNewPagePhotos.totalHits;
   console.log(photos);
 
-  if (photos.length === 0) {
+  if (photos.length < perPage) {
     // gallery.innerHTML = ``;
     newArea.innerHTML = HIDD_BTN;
     Notiflix.Notify.failure(theEnd);
-    pageNumber = 1;
+    for (const photo of photos) {
+      gallery.insertAdjacentHTML(
+        'beforeend',
+        `<div class="photo-card">
+          <img src="${photo.webformatURL}" alt="${photo.tags}" class="photo" loading="lazy" />
+              <div class="info">
+               <p class="info-item">
+                 <b>Likes: ${photo.likes}</b>
+               </p>
+               <p class="info-item">
+                 <b>Views: ${photo.views}</b>
+               </p>
+               <p class="info-item">
+                 <b>Comments: ${photo.comments}</b>
+               </p>
+               <p class="info-item">
+                 <b>Downloads: ${photo.downloads}</b>
+               </p>
+              </div>
+        </div>`
+      );
+    }
   } else {
     newArea.innerHTML = VISIB_BTN;
 
